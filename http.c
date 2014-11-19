@@ -1392,7 +1392,12 @@ http_connect(struct url *URL, struct url *purl, const char *flags)
 
 	curl = (purl != NULL) ? purl : URL;
 
-	if ((conn = fetch_connect(curl->host, curl->port, af, verbose)) == NULL)
+  if (URL->fconnapp)
+    conn = URL->fconnapp(curl->host, curl->port, af, verbose);
+  else
+    conn = fetch_connect(curl->host, curl->port, af, verbose);
+
+  if (conn == NULL)
 		/* fetch_connect() has already set an error code */
 		return (NULL);
 	if (strcasecmp(URL->scheme, SCHEME_HTTPS) == 0 && purl) {

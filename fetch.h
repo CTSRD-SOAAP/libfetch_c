@@ -37,6 +37,10 @@
 #define URL_USERLEN 256
 #define URL_PWDLEN 256
 
+/* fetch_connect callback */
+struct fetchconn;
+typedef struct fetchconn* (*fetch_connect_cb)(const char *, int, int, int);
+
 struct url {
 	char		 scheme[URL_SCHEMELEN+1];
 	char		 user[URL_USERLEN+1];
@@ -47,6 +51,7 @@ struct url {
 	off_t		 offset;
 	size_t		 length;
 	time_t		 ims_time;
+  fetch_connect_cb fconnapp;
 };
 
 struct url_stat {
