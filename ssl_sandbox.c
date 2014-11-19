@@ -40,6 +40,7 @@
 
 #ifndef NO_SANDBOX
 #include <sandbox.h>
+#include <sys/capability.h>
 /*#include <sandbox_rpc.h>*/
 #endif
 
@@ -432,6 +433,9 @@ ssl_sandbox(void)
 	int fdarray[1], fdcount; /* We expect a fd for SSL_INIT op */
 	int *fdp;
 	int ssl_shutdown = 0;
+
+  DPRINTF("Calling cap_enter()");
+  cap_enter(); // begin sandboxed execution
 
 	DPRINTF("===> In ssl_sandbox()");
 
