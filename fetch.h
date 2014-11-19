@@ -51,7 +51,7 @@ struct url {
 	off_t		 offset;
 	size_t		 length;
 	time_t		 ims_time;
-  fetch_connect_cb fconnapp;
+  fetch_connect_cb conn_fn;
 };
 
 struct url_stat {

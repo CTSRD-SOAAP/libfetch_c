@@ -1392,8 +1392,8 @@ http_connect(struct url *URL, struct url *purl, const char *flags)
 
 	curl = (purl != NULL) ? purl : URL;
 
-  if (URL->fconnapp)
-    conn = URL->fconnapp(curl->host, curl->port, af, verbose);
+  if (URL->conn_fn)
+    conn = URL->conn_fn(curl->host, curl->port, af, verbose);
   else
     conn = fetch_connect(curl->host, curl->port, af, verbose);
 
