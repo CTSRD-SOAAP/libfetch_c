@@ -1,7 +1,10 @@
 # $FreeBSD: stable/10/lib/libfetch/Makefile 240496 2012-09-14 13:00:43Z des $
 
 .include <bsd.own.mk>
-MK_SSL_SANDBOX := yes
+
+.if defined(NO_SANDBOX) && defined(SANDBOX_SSL)
+.error NO_SANDBOX and SANDBOX_SSL cannot both be specified
+.endif
 
 LIB=		fetch
 CFLAGS+=	-I.
@@ -19,10 +22,10 @@ CFLAGS+=	-DINET6
 CFLAGS+=	-DWITH_SSL
 DPADD=		${LIBSSL} ${LIBCRYPTO}
 LDADD=		-lssl -lcrypto
-.if ${MK_SSL_SANDBOX} != "no"
-CFLAGS+=	-I/root/git/libsep
+.ifdef SANDBOX_SSL
+CFLAGS+=	-I../libsep -DSANDBOX_SSL
 DPADD+=		${LIBSEP}
-LDADD+=		-L/root/git/libsep -lsep
+LDADD+=		-L../libsep -lsep
 .else
 CFLAGS+=	-DNO_SANDBOX
 .endif

@@ -501,41 +501,41 @@ ssl_sandbox(void)
 int
 fetch_ssl_wrapper(conn_t *conn, const struct url *URL, int verbose)
 {
-#ifdef NO_SANDBOX
-	return (fetch_ssl(conn, URL, verbose));
-#else
+#ifdef SANDBOX_SSL
 	fetch_sandbox_init();
 	return (fetch_ssl_insandbox(conn, URL, verbose));
+#else
+	return (fetch_ssl(conn, URL, verbose));
 #endif
 }
 
 ssize_t
 fetch_ssl_read_wrapper(SSL *ssl, char *buf, size_t buflen)
 {
-#ifdef NO_SANDBOX
-	return (fetch_ssl_read(ssl, buf, buflen));
-#else
+#ifdef SANDBOX_SSL
 	return (fetch_ssl_read_insandbox(buf, buflen));
+#else
+	return (fetch_ssl_read(ssl, buf, buflen));
 #endif
 }
 
 ssize_t
 fetch_ssl_write_wrapper(SSL *ssl, char *buf, size_t buflen)
 {
-#ifdef NO_SANDBOX
-	return (fetch_ssl_write(ssl, buf, buflen));
-#else
+#ifdef SANDBOX_SSL
 	return (fetch_ssl_write_insandbox(buf, buflen));
+#else
+	return (fetch_ssl_write(ssl, buf, buflen));
 #endif
 }
 
 void
 fetch_ssl_shutdown_wrapper(conn_t *conn)
 {
-#ifdef NO_SANDBOX
-	fetch_ssl_shutdown(conn);
-#else
+#ifdef SANDBOX_SSL
 	fetch_ssl_shutdown_insandbox();
 	conn->ssl_on = 0;
+#else
+	fetch_ssl_shutdown(conn);
 #endif
 }

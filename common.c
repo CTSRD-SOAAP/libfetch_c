@@ -997,11 +997,11 @@ fetch_read(conn_t *conn, char *buf, size_t len)
 		 * slightly) when reading small amounts of data.
 		 */
 #ifdef WITH_SSL
-#ifdef NO_SANDBOX
-		if (conn->ssl != NULL)
-#else
+#ifdef SANDBOX_SSL
 		if (conn->ssl_on)
-#endif /* NO_SANDBOX */
+#else
+		if (conn->ssl != NULL)
+#endif /* SANDBOX_SSL */
 			rlen = fetch_ssl_read_wrapper(conn->ssl, buf, len);
 		else
 #endif
@@ -1141,11 +1141,11 @@ fetch_writev(conn_t *conn, struct iovec *iov, int iovcnt)
 		}
 		errno = 0;
 #ifdef WITH_SSL
-#ifdef NO_SANDBOX
-		if (conn->ssl != NULL)
-#else
+#ifdef SANDBOX_SSL
 		if (conn->ssl_on)
-#endif /*NO_SANDBOX*/
+#else
+		if (conn->ssl != NULL)
+#endif /*SANDBOX_SSL*/
 			/*wlen = SSL_write(conn->ssl, iov->iov_base, iov->iov_len);*/
 			wlen = fetch_ssl_write_wrapper(conn->ssl, iov->iov_base, iov->iov_len);
 		else
@@ -1213,11 +1213,11 @@ fetch_close(conn_t *conn)
 	if (--conn->ref > 0)
 		return (0);
 #ifdef WITH_SSL
-#ifdef NO_SANDBOX
-	if (conn->ssl != NULL)
-#else
+#ifdef SANDBOX_SSL
 	if (conn->ssl_on)
-#endif /* NO_SANDBOX */
+#else
+	if (conn->ssl != NULL)
+#endif /* SANDBOX_SSL */
 		fetch_ssl_shutdown_wrapper(conn);
 #endif
 	ret = close(conn->sd);
