@@ -109,10 +109,12 @@ int		 fetch_no_proxy_match(const char *);
 #define netdb_seterr(n)	 fetch_seterr(netdb_errlist, n)
 #define url_seterr(n)	 fetch_seterr(url_errlist, n)
 
+#ifndef DEBUG // avoid macro redefinition
 #ifndef NDEBUG
 #define DEBUG(x) do { if (fetchDebug) { x; } } while (0)
 #else
 #define DEBUG(x) do { } while (0)
+#endif
 #endif
 
 /*
