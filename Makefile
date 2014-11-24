@@ -25,6 +25,11 @@ LDADD=		-lmd
 
 CFLAGS+=	-DFTP_COMBINE_CWDS
 
+.ifdef WITH_SOAAP
+CC=      ${LLVM_BUILD_DIR}/bin/clang
+CFLAGS+=  -I${SOAAP_SOURCE_DIR}/include
+.endif
+
 CSTD?=		c99
 
 SHLIB_MAJOR=    6
