@@ -36,6 +36,10 @@ LDADD=		-lmd
 
 CFLAGS+=	-DFTP_COMBINE_CWDS
 
+.ifdef DEBUG
+CFLAGS+=  -g
+.endif
+
 CSTD?=		c99
 
 SHLIB_MAJOR=    6
