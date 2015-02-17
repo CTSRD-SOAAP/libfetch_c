@@ -44,6 +44,10 @@
 #include <openssl/err.h>
 #endif
 
+#ifdef WITH_SOAAP
+#include "soaap.h"
+#endif
+
 /* Connection */
 typedef struct fetchconn conn_t;
 struct fetchconn {

@@ -41,12 +41,19 @@ __FBSDID("$FreeBSD: stable/10/lib/libfetch/fetch.c 252375 2013-06-29 15:51:27Z k
 #include "common.h"
 
 auth_t	 fetchAuthMethod;
+#ifdef SANDBOX_PARSE_URL
+int	 fetchLastErrCode __soaap_var_write("parser");
+#else
 int	 fetchLastErrCode;
+#endif
 char	 fetchLastErrString[MAXERRSTRING];
 int	 fetchTimeout;
 int	 fetchRestartCalls = 1;
-int	 fetchDebug;
-
+#ifdef SANDBOX_PARSE_URL
+int	 fetchDebug __soaap_var_read("parser");
+#else
+int	 fetchDebug; 
+#endif
 
 /*** Local data **************************************************************/
 
@@ -336,6 +343,13 @@ fetch_pctdecode(char *dst, const char *src, size_t dlen)
  * [method:/][/[user[:pwd]@]host[:port]/][document]
  * This almost, but not quite, RFC1738 URL syntax.
  */
+#ifdef SANDBOX_PARSE_URL
+#ifdef SANDBOX_EPHEMERAL
+__soaap_sandbox_ephemeral("parser")
+#else
+__soaap_sandbox_persistent("parser")
+#endif
+#endif
 struct url *
 fetchParseURL(const char *URL)
 {

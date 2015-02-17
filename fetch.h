@@ -31,6 +31,10 @@
 #ifndef _FETCH_H_INCLUDED
 #define _FETCH_H_INCLUDED
 
+#ifdef WITH_SOAAP
+#include "soaap.h"
+#endif
+
 #define _LIBFETCH_VER "libfetch/2.0"
 
 #define URL_SCHEMELEN 16
@@ -39,8 +43,16 @@
 
 struct url {
 	char		 scheme[URL_SCHEMELEN+1];
+#ifdef SANDBOX_PARSE_URL
+	char		 user[URL_USERLEN+1] __soaap_classify("secret");
+	char		 pwd[URL_PWDLEN+1] __soaap_classify("secret");
+#elif defined(SANDBOX_FETCH)
+	char		 user[URL_USERLEN+1] __soaap_private("net");
+	char		 pwd[URL_PWDLEN+1] __soaap_private("net");
+#else
 	char		 user[URL_USERLEN+1];
 	char		 pwd[URL_PWDLEN+1];
+#endif
 	char		 host[MAXHOSTNAMELEN+1];
 	int		 port;
 	char		*doc;
