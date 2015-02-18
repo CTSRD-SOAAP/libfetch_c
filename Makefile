@@ -23,9 +23,10 @@ CFLAGS+=	-DWITH_SSL
 DPADD=		${LIBSSL} ${LIBCRYPTO}
 LDADD=		-lssl -lcrypto
 .ifdef SANDBOX_SSL
-CFLAGS+=	-I../libsep -DSANDBOX_SSL
-DPADD+=		${LIBSEP}
-LDADD+=		-L../libsep -lsep
+LIBSEP_DIR?= ../libsep
+CFLAGS+=	-I${LIBSEP_DIR} -DSANDBOX_SSL
+DPADD+=		${LIBSEP_DIR}
+LDADD+=		-L${LIBSEP_DIR} -lsep
 .else
 CFLAGS+=	-DNO_SANDBOX
 .endif
@@ -96,3 +97,17 @@ MLINKS+= fetch.3 fetchXGetHTTP.3
 MLINKS+= fetch.3 fetchXGetURL.3
 
 .include <bsd.lib.mk>
+
+sandbox_fetch:
+.ifdef DEBUG
+	make -DSANDBOX_FETCH -DDEBUG
+.else
+	make -DSANDBOX_FETCH
+.endif
+
+sandbox_parse:
+.ifdef DEBUG
+	make -DSANDBOX_PARSE_URL -DDEBUG
+.else
+	make -DSANDBOX_PARSE_URL
+.endif
