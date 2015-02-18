@@ -55,6 +55,7 @@ __FBSDID("$FreeBSD: stable/10/lib/libfetch/common.c 262560 2014-02-27 13:27:04Z 
 
 #include "fetch.h"
 #include "common.h"
+#include "debug.h"
 
 
 /*** Local data **************************************************************/
@@ -181,11 +182,13 @@ fetch_info(const char *fmt, ...)
  * Return the default port for a scheme
  */
 int
-fetch_default_port(const char *scheme)
+fetch_default_port(const struct url *URL)
 {
 	struct servent *se;
+  getservbyname_cb getservbyname_fn = (URL->getserv_fn) ? URL->getserv_fn : getservbyname;
+  const char *scheme = URL->scheme;
 
-	if ((se = getservbyname(scheme, "tcp")) != NULL)
+	if ((se = getservbyname_fn(scheme, "tcp")) != NULL)
 		return (ntohs(se->s_port));
 	if (strcasecmp(scheme, SCHEME_FTP) == 0)
 		return (FTP_DEFAULT_PORT);

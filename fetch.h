@@ -40,6 +40,7 @@
 /* fetch_connect callback */
 struct fetchconn;
 typedef struct fetchconn* (*fetch_connect_cb)(const char *, int, int, int);
+typedef struct servent* (*getservbyname_cb)(const char *, const char *);
 
 struct url {
 	char		 scheme[URL_SCHEMELEN+1];
@@ -52,6 +53,7 @@ struct url {
 	size_t		 length;
 	time_t		 ims_time;
   fetch_connect_cb conn_fn;
+  getservbyname_cb getserv_fn;
 };
 
 struct url_stat {

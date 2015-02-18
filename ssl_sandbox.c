@@ -50,15 +50,7 @@
 
 #include "fetch.h"
 #include "common.h"
-
-/* DPRINTF */
-#ifdef DEBUG
-#define DPRINTF(format, ...)				\
-	fprintf(stderr, "%s [%d] " format "\n", 	\
-	__FUNCTION__, __LINE__, ##__VA_ARGS__)
-#else
-#define DPRINTF(...)
-#endif
+#include "debug.h"
 
 #define MMIN(a, b) ((a) < (b) ? (a) : (b))
 

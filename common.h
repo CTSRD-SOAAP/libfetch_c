@@ -75,7 +75,7 @@ struct iovec;
 void		 fetch_seterr(struct fetcherr *, int);
 void		 fetch_syserr(void);
 void		 fetch_info(const char *, ...);
-int		 fetch_default_port(const char *);
+int		 fetch_default_port(const struct url *);
 int		 fetch_default_proxy_port(const char *);
 int		 fetch_bind(int, int, const char *);
 conn_t		*fetch_connect(const char *, int, int, int);

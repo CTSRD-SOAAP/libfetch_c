@@ -1552,7 +1552,7 @@ http_request(struct url *URL, const char *op, struct url_stat *us,
 
 		/* check port */
 		if (!url->port)
-			url->port = fetch_default_port(url->scheme);
+			url->port = fetch_default_port(url);
 
 		/* were we redirected to an FTP URL? */
 		if (purl == NULL && strcmp(url->scheme, SCHEME_FTP) == 0) {
@@ -1573,7 +1573,7 @@ http_request(struct url *URL, const char *op, struct url_stat *us,
 			host = hbuf;
 		}
 #endif
-		if (url->port != fetch_default_port(url->scheme)) {
+		if (url->port != fetch_default_port(url)) {
 			if (host != hbuf) {
 				strcpy(hbuf, host);
 				host = hbuf;
@@ -1826,6 +1826,7 @@ http_request(struct url *URL, const char *op, struct url_stat *us,
 				new->offset = url->offset;
 				new->length = url->length;
         new->conn_fn = url->conn_fn;
+        new->getserv_fn = url->getserv_fn;
 				break;
 			case hdr_transfer_encoding:
 				/* XXX weak test*/

@@ -916,7 +916,7 @@ ftp_authenticate(conn_t *conn, struct url *url, struct url *purl)
 		user = getenv("FTP_LOGIN");
 	if (user == NULL || *user == '\0')
 		user = FTP_ANONYMOUS_USER;
-	if (purl && url->port == fetch_default_port(url->scheme))
+	if (purl && url->port == fetch_default_port(url))
 		e = ftp_cmd(conn, "USER %s@%s", user, url->host);
 	else if (purl)
 		e = ftp_cmd(conn, "USER %s@%s@%d", user, url->host, url->port);
@@ -1039,7 +1039,7 @@ ftp_cached_connect(struct url *url, struct url *purl, const char *flags)
 
 	/* set default port */
 	if (!url->port)
-		url->port = fetch_default_port(url->scheme);
+		url->port = fetch_default_port(url);
 
 	/* try to use previously cached connection */
 	if (ftp_isconnected(url)) {
