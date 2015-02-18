@@ -96,3 +96,9 @@ MLINKS+= fetch.3 fetchXGetHTTP.3
 MLINKS+= fetch.3 fetchXGetURL.3
 
 .include <bsd.lib.mk>
+
+soaap_fetch:
+	make -DWITH_LLVM_INSTRUMENTED -DWITH_SOAAP -DSANDBOX_FETCH
+
+soaap_parse:
+	make -DWITH_LLVM_INSTRUMENTED -DWITH_SOAAP -DSANDBOX_PARSE_URL
